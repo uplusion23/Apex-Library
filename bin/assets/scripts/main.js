@@ -183,6 +183,9 @@ $('[data-window="minimize"]').click(function() {
 });
 
 $(document).ready(function() {
+  var backgrounds = fs.readdirSync('./assets/images/backgrounds/');
+  var chosenFile = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+  $('.container').css("background-image", "var(--gradient-1-o), url('../assets/images/backgrounds/" + chosenFile + "')");
   setTimeout(function() {
     $('.container').removeClass('launching');
   }, 1000);
