@@ -15,6 +15,7 @@ Extra / Non-Launcher Games | Not Started
 Settings | Not Started
 Custom Cover Art | Not Started
 Custom Games | Not Started
+Favorites | Not Start
 
 ### Development
 Use `npm i` in package bin directory to install required modules. Then run "start.ps1" in the root folder to launch.
