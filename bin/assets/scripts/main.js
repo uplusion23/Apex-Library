@@ -165,7 +165,7 @@ $('.library').on('click', '[data-launch]', function() {
 });
 
 $('[data-window="close"]').click(function() {
-  nw.App.Quit();
+  nw.App.quit();
 });
 
 $('[data-window="size"]').click(function() {
