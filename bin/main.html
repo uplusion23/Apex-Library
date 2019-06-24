@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="assets/css/style.css">
+  </head>
+  <body>
+    <div class="container launching">
+      <div class="navigation">
+        <a data-tab="library" href="#" class="active">Library</a>
+        <a data-tab="settings" href="#">Settings</a>
+        <a data-tab="about" href="#">About</a>
+      </div>
+      <div class="page active" data-page="library">
+        <div class="library">
+        </div>
+      </div>
+      <div class="page" data-page="settings">
+        <div class="settings">
+          Settings
+        </div>
+      </div>
+      <div class="page" data-page="about">
+        <div class="about">
+          <div>
+            <h1 class="page-title">Apex Launcher</h1>
+            <span class="page-description">An open-source game library consolidator and launcher. Automatically downloads the cover art for your entire library, supporting Blizzard games, Steam games, and Origin.</span>
+          </div>
+        </div>
+      </div>
+      <div class="loader">
+        <svg id="triangle" width="100px" height="100px" viewBox="-3 -4 39 39">
+        	<linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+        		<stop offset="0%" style="stop-color:rgb(131,58,180);stop-opacity:1" />
+        		<stop offset="100%" style="stop-color:rgb(253,29,29);stop-opacity:1" />
+        	</linearGradient>
+        	<polygon fill="#EFEFEF" stroke="url(#grad1)" stroke-width="1" points="16,0 32,32 24,32 20,24 12,24 8,32 0,32" fill-opacity="0"></polygon>
+        </svg>
+        <h2>Loading Apex Launcher...</h2>
+      </div>
+    </div>
+    <div class="frame">
+      <span id="title"></span>
+    </div>
+    <div class="windows-controls">
+      <a data-window="close"></a>
+      <a data-window="size"></a>
+      <a data-window="minimize"></a>
+    </div>
+    <script src="assets/scripts/jquery.min.js"></script>
+    <script src="assets/scripts/vdf.js"></script>
+    <script src="assets/scripts/steam.js"></script>
+    <script src="assets/scripts/origin.js"></script>
+    <script src="assets/scripts/battlenet.js"></script>
+    <script src="assets/scripts/main.js"></script>
+  </body>
+</html>
