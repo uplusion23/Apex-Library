@@ -19,4 +19,13 @@ Edit Games | `Started`
 Favorites | `Working`
 
 ### Development
-Use `npm i` in package bin directory to install required modules. Then run "start.ps1" in the root folder to launch.
+1. Install NodeJS
+2. Download NWJS SDK and place it in the root folder under `/nwjs`
+3. Use `npm i` in package bin directory to install required modules.
+4. Then run "start.ps1" in the root folder to launch.
+
+## Images
+
+![alt text](https://i.imgur.com/kBlHow1.png "Library Page")
+
+![alt text](https://i.imgur.com/lD5qLLg.gif "Demonstration of current version.")
