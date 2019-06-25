@@ -145,10 +145,21 @@ var main = {
       $('[data-name="' + name + '"]').addClass('favorite');
     }
   },
+  editGame: function(name) {
+    $('.game-editor').addClass('active');
+    $('.container').addClass('dim');
+  },
   addGame: function(data) {
+    if (main.settings.games[data.title] === undefined) {
+      main.settings.games[data.title] = data;
+    }
+
+    if (main.settings.games[data.title].remove == true) {
+      return false;
+    }
+
     var noArt = (data.noArt == true) ? "<span class=\"no-art\">" + data.title + "</span>" : "";
     var favorite = (main.settings.favorites[data.title] == true) ? " favorite" : "";
-
 
     if (data.noArt == true) { data.cover = "linear-gradient(to right, #2b5876, #4e4376);" }
     var $ele = '\
@@ -240,18 +251,27 @@ $("body").on("contextmenu", ".context", function(e) {
   return false;
 });
 
-$("body").on("click", ".context", function(e) {
-  $(this).css({
+$("body").on("click", function(e) {
+  $('.context').css({
     opacity: 0,
     "pointer-events": "none"
   });
 });
 
+$("body").on('click', '.dimmer', function() {
+  $('.game-editor.active').removeClass('active');
+  $('.container').removeClass('dim');
+});
+
 $("body").on("click", "[data-gameaction]", function() {
   var action = $(this).data('gameaction');
+  var name = $('.game-card[data-context]').data('name');
   switch (action) {
     case "favorite":
-      main.toggleFavorite($('.game-card[data-context]').data('name'));
+      main.toggleFavorite(name);
+      break;
+    case "edit":
+      main.editGame(name)
       break;
   }
 });
