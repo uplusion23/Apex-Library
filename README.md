@@ -28,4 +28,4 @@ Favorites | `Working`
 
 ![alt text](https://i.imgur.com/kBlHow1.png "Library Page")
 
-![alt text](https://i.imgur.com/lD5qLLg.gif "Demonstration of current version.")
+![alt text](https://media.giphy.com/media/lnfgomzMzPfqhagj6G/giphy.gif)
