@@ -23,22 +23,41 @@ var main = {
       "noArt": false
     }
   },
+  settings: {
+    favorites: [],
+    games: []
+  },
   intervals: {
     _process: null
   },
-  createDirs: function() {
+  setup: function(callback) {
     if (!fs.existsSync("./userStorage/")) {
       fs.mkdirSync("./userStorage/");
     }
     if (!fs.existsSync("./userStorage/art/")) {
       fs.mkdirSync("./userStorage/art/");
     }
+    if (!fs.existsSync("settings.json")) {
+      fs.writeFile('settings.json', JSON.stringify(main.settings, null, 2), 'utf8');
+    }
+    callback();
+  },
+  loadSettings: function(callback) {
+    this.settings = JSON.parse(fs.readFileSync('settings.json'));
+    callback();
+  },
+  saveSettings: function(callback) {
+    fs.writeFile('settings.json', JSON.stringify(main.settings, null, 2), 'utf8');
+    callback();
   },
   init: function() {
-    this.createDirs();
-    readSteamGames();
-    getOriginGames();
-    getBattleNetGames();
+    this.setup(function() {
+      main.loadSettings(function() {
+        readSteamGames();
+        getOriginGames();
+        getBattleNetGames();
+      });
+    });
   },
   getDirectories: function(dir) {
     return fs.readdirSync(dir).filter(function (file) {
@@ -118,19 +137,36 @@ var main = {
         });
       }
   },
+  toggleFavorite: function(name) {
+    main.settings.favorites[name] = !main.settings.favorites[name];
+    if (main.settings.favorites[name] == false) {
+      $('[data-name="' + name + '"]').removeClass('favorite');
+    } else {
+      $('[data-name="' + name + '"]').addClass('favorite');
+    }
+  },
   addGame: function(data) {
     var noArt = (data.noArt == true) ? "<span class=\"no-art\">" + data.title + "</span>" : "";
+    var favorite = (main.settings.favorites[data.title] == true) ? " favorite" : "";
+
+
     if (data.noArt == true) { data.cover = "linear-gradient(to right, #2b5876, #4e4376);" }
     var $ele = '\
-  <div data-launch="' + data.launch + '" data-vendor="' + data.vendor + '" data-name="' + data.title + '" class="game-card" style="background-image: ' + data.cover + '">\
+  <div data-launch="' + data.launch + '" data-vendor="' + data.vendor + '" data-name="' + data.title + '" class="game-card' + favorite + '" style="background-image: ' + data.cover + '">\
    ' + noArt + '\
    <img src="./assets/images/vendor/' + data.vendor + '.png" />\
    <div class="card-title">\
     <span>' + data.title + '</span>\
    </div>\
   </div>\
-  '
-    $($ele).appendTo('.library');
+  ';
+    if (main.settings.favorites[data.title] === undefined) { main.settings.favorites[data.title] = false }
+    if (main.settings.favorites[data.title] === false) {
+      $($ele).appendTo('.library');
+    } else {
+      $($ele).appendTo('.library');
+    }
+    //$($ele).appendTo('.library .favorites');
   }
 }
 
@@ -165,7 +201,7 @@ $('.library').on('click', '[data-launch]', function() {
 });
 
 $('[data-window="close"]').click(function() {
-  nw.App.quit();
+  nw.App.closeAllWindows();
 });
 
 $('[data-window="size"]').click(function() {
@@ -180,6 +216,44 @@ $('[data-window="size"]').click(function() {
 
 $('[data-window="minimize"]').click(function() {
   win.minimize();
+});
+
+win.on('close', function() {
+  main.saveSettings(function() {
+    nw.App.quit();
+  });
+});
+
+$("body").on("contextmenu", ".game-card", function(e) {
+  $('.game-card[data-context]').removeAttr('data-context');
+  $(this).attr('data-context', '');
+  $('.context-game-card').css({
+    opacity: 1,
+    left: e.pageX,
+    top: e.pageY,
+    "pointer-events": "auto"
+  });
+  return false;
+});
+
+$("body").on("contextmenu", ".context", function(e) {
+  return false;
+});
+
+$("body").on("click", ".context", function(e) {
+  $(this).css({
+    opacity: 0,
+    "pointer-events": "none"
+  });
+});
+
+$("body").on("click", "[data-gameaction]", function() {
+  var action = $(this).data('gameaction');
+  switch (action) {
+    case "favorite":
+      main.toggleFavorite($('.game-card[data-context]').data('name'));
+      break;
+  }
 });
 
 $(document).ready(function() {

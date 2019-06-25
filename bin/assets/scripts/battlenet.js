@@ -79,7 +79,6 @@ function getBattleNetGames() {
         title: battleNetGames[x].name,
         dir: battleNetGames[x].path,
         launch: '*' + battleNetPath + '\\Battle.net.exe* --exec=*launch '  + launchCode + '*',
-        favorite: false,
         noArt: true,
         vendor: "battlenet"
       }

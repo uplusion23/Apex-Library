@@ -4,6 +4,13 @@
     <link rel="stylesheet" href="assets/css/style.css">
   </head>
   <body>
+    <div class="context-game-card context">
+      <div class="inner">
+        <span data-gameaction="favorite">Favorite</span>
+        <span data-gameaction="edit">Edit</span>
+        <span data-gameaction="remove">Remove</span>
+      </div>
+    </div>
     <div class="container launching">
       <div class="navigation">
         <a data-tab="library" href="#" class="active">Library</a>
@@ -12,6 +19,8 @@
       </div>
       <div class="page active" data-page="library">
         <div class="library">
+          <div class="favorites-seperator">
+          </div>
         </div>
       </div>
       <div class="page" data-page="settings">

@@ -89,3 +89,4 @@ typings/
 
 bin/userStorage/
 bin/key.json
+settings.json

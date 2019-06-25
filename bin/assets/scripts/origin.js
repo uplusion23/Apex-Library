@@ -29,7 +29,6 @@ function getOriginGames() {
         title: jsonManifest.DiPManifest.gameTitles.gameTitle[0]._text,
         dir: installDir.replace('\\', '\\\\'),
         launch: "origin2://game/launch?offerIds=" + launchString,
-        favorite: false,
         noArt: true,
         vendor: "origin"
       }
