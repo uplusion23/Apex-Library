@@ -20,7 +20,7 @@ Favorites | `Working`
 
 ### Development
 1. Install NodeJS
-2. Download NWJS SDK and place it in the root folder under `/nwjs`
+2. Download [NWJS SDK v0.33.1](https://dl.nwjs.io/v0.33.1/nwjs-sdk-v0.33.1-win-x64.zip) and place it in the root folder under `/nwjs`
 3. Use `npm i` in package bin directory to install required modules.
 4. Then run "start.ps1" in the root folder to launch.
 
