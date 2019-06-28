@@ -22,7 +22,8 @@ Favorites | `Working`
 1. Install NodeJS
 2. Download [NWJS SDK v0.33.1](https://dl.nwjs.io/v0.33.1/nwjs-sdk-v0.33.1-win-x64.zip) and place it in the root folder under `/nwjs`
 3. Use `npm i` in package bin directory to install required modules.
-4. Then run "start.ps1" in the root folder to launch.
+4. Get an API key from [Steam Icon DB](https://www.steamgriddb.com/) and place it in a JSON file in the `bin` folder as `key.json`
+5. Start the program with the included executable `ApexLibrary.exe`
 
 ## Images
 
