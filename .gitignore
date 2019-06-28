@@ -92,3 +92,4 @@ bin/key.json
 settings.json
 *.psd
 *.ico
+nwjs/
