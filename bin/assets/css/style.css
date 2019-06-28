@@ -344,14 +344,14 @@ html, body {
 }
 
 .container .game-editor {
-  display: block;
+  display: flex;
+  flex-direction: row;
   position: fixed;
   bottom: -20px;
   left: 0;
   width: 100%;
   height: 250px;
-  background-color: #34495e;
-  box-shadow: 0 -10px 20px rgba(0,0,0,0.19), 0 -6px 6px rgba(0,0,0,0.23);
+  backdrop-filter: blur(0);
   transition: var(--transition);
   opacity: 0;
   pointer-events: none;
@@ -366,6 +366,7 @@ html, body {
   pointer-events: auto;
   bottom: 0;
   z-index: 12;
+  backdrop-filter: blur(30px);
 }
 
 .container .game-editor .editor-thumbnail {
@@ -399,6 +400,20 @@ html, body {
   opacity: 0.7;
 }
 
+.container .game-editor .submit {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  width: 250px;
+  padding: 40px 0;
+  box-sizing: border-box;
+}
+
+.container .game-editor .inputs {
+  flex-grow: 1;
+  margin-left: 40px;
+}
+
 .container.launching .page {
   opacity: 0;
   pointer-events: none;
@@ -425,6 +440,91 @@ html, body {
   padding: 0;
   font-size: 1rem;
   font-weight: 300;
+}
+
+.btn {
+  display: inline-block;
+  position: relative;
+  margin: 7px 5px;
+  padding: 0 20px;
+  height: 35px;
+  line-height: 35px;
+  color: #833ab4;
+  box-sizing: border-box;
+  cursor: pointer;
+  border: 1px solid #833ab4;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.btn:hover {
+  background: #833ab4;
+  color: #FAFAFA;
+}
+
+.material-input {
+  height: 80px;
+  overflow-x: hidden;
+  overflow-y: visible;
+  position: relative;
+}
+
+.material-input input[type="color"], .material-input input[type="date"], .material-input input[type="datetime"], .material-input input[type="datetime-local"], .material-input input[type="email"], .material-input input[type="month"], .material-input input[type="number"], .material-input input[type="password"], .material-input input[type="search"], .material-input input[type="tel"], .material-input input[type="text"], .material-input input[type="time"], .material-input input[type="url"], .material-input input[type="week"], .material-input input:not([type]), .material-input textarea {
+  background-color: transparent;
+  border-color: #B22F7A;
+  border-style: none none solid;
+  border-width: 0 0 1px;
+  bottom: 0;
+  box-sizing: border-box;
+  color: #FFF;
+  font-size: 16px;
+  padding: 10px;
+  position: absolute;
+  width: 100%;
+}
+.material-input input[type="color"]:focus, .material-input input[type="date"]:focus, .material-input input[type="datetime"]:focus, .material-input input[type="datetime-local"]:focus, .material-input input[type="email"]:focus, .material-input input[type="month"]:focus, .material-input input[type="number"]:focus, .material-input input[type="password"]:focus, .material-input input[type="search"]:focus, .material-input input[type="tel"]:focus, .material-input input[type="text"]:focus, .material-input input[type="time"]:focus, .material-input input[type="url"]:focus, .material-input input[type="week"]:focus, .material-input input:not([type]):focus, .material-input textarea:focus {
+  outline: 0;
+}
+.material-input input[type="color"]:focus ~ span, .material-input input[type="date"]:focus ~ span, .material-input input[type="datetime"]:focus ~ span, .material-input input[type="datetime-local"]:focus ~ span, .material-input input[type="email"]:focus ~ span, .material-input input[type="month"]:focus ~ span, .material-input input[type="number"]:focus ~ span, .material-input input[type="password"]:focus ~ span, .material-input input[type="search"]:focus ~ span, .material-input input[type="tel"]:focus ~ span, .material-input input[type="text"]:focus ~ span, .material-input input[type="time"]:focus ~ span, .material-input input[type="url"]:focus ~ span, .material-input input[type="week"]:focus ~ span, .material-input input:not([type]):focus ~ span, .material-input textarea:focus ~ span {
+  -webkit-transition: all 0.45s ease;
+  -moz-transition: all 0.45s ease;
+  transition: all 0.45s ease;
+  transform: translateX(0);
+}
+.material-input input[type="color"]:focus ~ label, .material-input input[type="color"]:valid ~ label, .material-input input[type="date"]:focus ~ label, .material-input input[type="date"]:valid ~ label, .material-input input[type="datetime"]:focus ~ label, .material-input input[type="datetime"]:valid ~ label, .material-input input[type="datetime-local"]:focus ~ label, .material-input input[type="datetime-local"]:valid ~ label, .material-input input[type="email"]:focus ~ label, .material-input input[type="email"]:valid ~ label, .material-input input[type="month"]:focus ~ label, .material-input input[type="month"]:valid ~ label, .material-input input[type="number"]:focus ~ label, .material-input input[type="number"]:valid ~ label, .material-input input[type="password"]:focus ~ label, .material-input input[type="password"]:valid ~ label, .material-input input[type="search"]:focus ~ label, .material-input input[type="search"]:valid ~ label, .material-input input[type="tel"]:focus ~ label, .material-input input[type="tel"]:valid ~ label, .material-input input[type="text"]:focus ~ label, .material-input input[type="text"]:valid ~ label, .material-input input[type="time"]:focus ~ label, .material-input input[type="time"]:valid ~ label, .material-input input[type="url"]:focus ~ label, .material-input input[type="url"]:valid ~ label, .material-input input[type="week"]:focus ~ label, .material-input input[type="week"]:valid ~ label, .material-input input:not([type]):focus ~ label, .material-input input:not([type]):valid ~ label, .material-input textarea:focus ~ label, .material-input textarea:valid ~ label {
+  -webkit-transition: all 0.125s ease;
+  -moz-transition: all 0.125s ease;
+  transition: all 0.125s ease;
+  color: #833ab4;
+  font-size: .75em;
+  transform: translateY(-100%);
+}
+.material-input input[type="color"]:invalid, .material-input input[type="date"]:invalid, .material-input input[type="datetime"]:invalid, .material-input input[type="datetime-local"]:invalid, .material-input input[type="email"]:invalid, .material-input input[type="month"]:invalid, .material-input input[type="number"]:invalid, .material-input input[type="password"]:invalid, .material-input input[type="search"]:invalid, .material-input input[type="tel"]:invalid, .material-input input[type="text"]:invalid, .material-input input[type="time"]:invalid, .material-input input[type="url"]:invalid, .material-input input[type="week"]:invalid, .material-input input:not([type]):invalid, .material-input textarea:invalid {
+  box-shadow: none;
+}
+.material-input input[type="color"] ~ span, .material-input input[type="date"] ~ span, .material-input input[type="datetime"] ~ span, .material-input input[type="datetime-local"] ~ span, .material-input input[type="email"] ~ span, .material-input input[type="month"] ~ span, .material-input input[type="number"] ~ span, .material-input input[type="password"] ~ span, .material-input input[type="search"] ~ span, .material-input input[type="tel"] ~ span, .material-input input[type="text"] ~ span, .material-input input[type="time"] ~ span, .material-input input[type="url"] ~ span, .material-input input[type="week"] ~ span, .material-input input:not([type]) ~ span, .material-input textarea ~ span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  -webkit-transition: all 0.45s ease;
+  -moz-transition: all 0.45s ease;
+  transition: all 0.45s ease;
+  background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 100%);
+  display: block;
+  transform: translateX(-100%);
+}
+.material-input label {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  -webkit-transition: all 0.25s ease;
+  -moz-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+  color: #B22F7A;
+  pointer-events: none;
 }
 
 .loader {

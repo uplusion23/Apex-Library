@@ -38,7 +38,20 @@
         </div>
       </div>
       <div class="game-editor">
-        <div class="editor-thumbnail"></div>
+        <div class="editor-thumbnail" data-gameeditor="thumbnail"></div>
+        <div class="inputs">
+          <div class="material-input">
+            <input type="text" required="" data-gameeditor="name"/>
+            <label>Game Name</label><span></span>
+          </div>
+          <div class="material-input">
+            <input type="text" required="" data-gameeditor="launch"/>
+            <label>Game Launch Code / Executable</label><span></span>
+          </div>
+        </div>
+        <div class="submit">
+          <a class="btn" data-gameeditor="submit">Save Changes</a>
+        </div>
       </div>
       <div class="loader">
         <svg id="triangle" width="100px" height="100px" viewBox="-3 -4 39 39">
@@ -59,7 +72,7 @@
       <a data-window="size"></a>
       <a data-window="minimize"></a>
     </div>
-    <input style="display:none;" id="fileDialog" type="file" />
+    <input style="display:none;" id="thumbnailDialog" accept=".jpg,.jpeg,.png,.gif" type="file" />
     <script src="assets/scripts/jquery.min.js"></script>
     <script src="assets/scripts/vdf.js"></script>
     <script src="assets/scripts/steam.js"></script>

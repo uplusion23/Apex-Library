@@ -80,7 +80,8 @@ function getBattleNetGames() {
         dir: battleNetGames[x].path,
         launch: '*' + battleNetPath + '\\Battle.net.exe* --exec=*launch '  + launchCode + '*',
         noArt: true,
-        vendor: "battlenet"
+        vendor: "battlenet",
+        remove: false
       }
 
       main.getCoverArtByName(battleNetGames[x].name, function(coverArt) {
@@ -90,7 +91,6 @@ function getBattleNetGames() {
           console.groupEnd();
           data.noArt = true;
         } else {
-          coverArt = "url(" + coverArt + ");";
           data.noArt = false;
         }
         data.cover = coverArt;

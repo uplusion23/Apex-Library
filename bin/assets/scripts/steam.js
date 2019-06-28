@@ -6,7 +6,8 @@ function readSteamAcf(file) {
     title: acfdata.name,
     dir: acfdata.installdir,
     launch: "steam://run/" + acfdata.appid,
-    vendor: "steam"
+    vendor: "steam",
+    remove: false
   }
   main.getCoverArtById(acfdata.appid, function(coverArt) {
     if (coverArt == undefined) {
@@ -16,7 +17,6 @@ function readSteamAcf(file) {
       console.groupEnd();
       data.noArt = true;
     } else {
-      coverArt = "url(" + coverArt + ");";
       data.noArt = false;
     }
     data.cover = coverArt;

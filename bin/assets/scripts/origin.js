@@ -30,7 +30,8 @@ function getOriginGames() {
         dir: installDir.replace('\\', '\\\\'),
         launch: "origin2://game/launch?offerIds=" + launchString,
         noArt: true,
-        vendor: "origin"
+        vendor: "origin",
+        remove: false
       }
 
       // Seems to work, but too fast on initial call, that is messes up.
@@ -41,7 +42,6 @@ function getOriginGames() {
           console.groupEnd();
           data.noArt = true;
         } else {
-          coverArt = "url(" + coverArt + ");";
           data.noArt = false;
         }
         data.cover = coverArt;

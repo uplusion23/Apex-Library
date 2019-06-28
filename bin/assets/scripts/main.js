@@ -30,7 +30,7 @@ var main = {
   intervals: {
     _process: null
   },
-  setup: function(callback) {
+  setup: function(cb) {
     if (!fs.existsSync("./userStorage/")) {
       fs.mkdirSync("./userStorage/");
     }
@@ -40,15 +40,15 @@ var main = {
     if (!fs.existsSync("settings.json")) {
       fs.writeFile('settings.json', JSON.stringify(main.settings, null, 2), 'utf8');
     }
-    callback();
+    cb();
   },
-  loadSettings: function(callback) {
+  loadSettings: function(cb) {
     this.settings = JSON.parse(fs.readFileSync('settings.json'));
-    callback();
+    cb();
   },
-  saveSettings: function(callback) {
-    fs.writeFile('settings.json', JSON.stringify(main.settings, null, 2), 'utf8');
-    callback();
+  saveSettings: function(cb) {
+    fs.writeFileSync('settings.json', JSON.stringify(main.settings, null, 2), 'utf8');
+    cb();
   },
   init: function() {
     this.setup(function() {
@@ -81,7 +81,7 @@ var main = {
   },
   getCoverArtById: function(appId, callback) {
     if (fs.existsSync('./userStorage/art/' + appId + '.png')) {
-      callback('\'./userStorage/art/' + appId + '.png\'')
+      callback('./userStorage/art/' + appId + '.png')
     } else {
       SGDBClient.getGridsBySteamAppId(appId, ['blurred', 'material', "alternate", "no_logo"])
         .then((output) => {
@@ -104,7 +104,7 @@ var main = {
   },
   getCoverArtByName: function(name, callback) {
     if (fs.existsSync('./userStorage/art/' + name + '.png')) {
-      callback('\'./userStorage/art/' + name + '.png\'')
+      callback('./userStorage/art/' + name + '.png')
     } else {
       SGDBClient.searchGame(name)
         .then((output) => {
@@ -146,24 +146,29 @@ var main = {
     }
   },
   editGame: function(name) {
-    $('.game-editor').addClass('active');
-    $('.container').addClass('dim');
+    main.settings.games[name].cover = $('[data-gameeditor="thumbnail"]').css('background-image').replace('url(','').replace(')','').replace(/\"/gi, "");
+    main.settings.games[name].title = $('[data-gameeditor="name"]').val();
+    main.settings.games[name].launch = $('[data-gameeditor="launch"]').val();
+
+    $('.game-card[data-name="' + name + '"] .card-title span').text(main.settings.games[name].title);
+    $('.game-card[data-name="' + name + '"]').attr('data-launch', main.settings.games[name].launch);
+    $('.game-card[data-name="' + name + '"] img').attr('src', './assets/images/vendor/' + main.settings.games[name].vendor + '.png');
   },
   addGame: function(data) {
+    var gameName = data.title;
     if (main.settings.games[data.title] === undefined) {
       main.settings.games[data.title] = data;
+    } else {
+      data = main.settings.games[data.title];
     }
 
-    if (main.settings.games[data.title].remove == true) {
-      return false;
-    }
-
+    console.log(data)
     var noArt = (data.noArt == true) ? "<span class=\"no-art\">" + data.title + "</span>" : "";
     var favorite = (main.settings.favorites[data.title] == true) ? " favorite" : "";
 
     if (data.noArt == true) { data.cover = "linear-gradient(to right, #2b5876, #4e4376);" }
     var $ele = '\
-  <div data-launch="' + data.launch + '" data-vendor="' + data.vendor + '" data-name="' + data.title + '" class="game-card' + favorite + '" style="background-image: ' + data.cover + '">\
+  <div data-launch="' + data.launch + '" data-vendor="' + data.vendor + '" data-name="' + gameName + '" class="game-card' + favorite + '" style="background-image: url(\'' + data.cover + '\');">\
    ' + noArt + '\
    <img src="./assets/images/vendor/' + data.vendor + '.png" />\
    <div class="card-title">\
@@ -171,13 +176,7 @@ var main = {
    </div>\
   </div>\
   ';
-    if (main.settings.favorites[data.title] === undefined) { main.settings.favorites[data.title] = false }
-    if (main.settings.favorites[data.title] === false) {
-      $($ele).appendTo('.library');
-    } else {
-      $($ele).appendTo('.library');
-    }
-    //$($ele).appendTo('.library .favorites');
+    $($ele).appendTo('.library');
   }
 }
 
@@ -271,8 +270,47 @@ $("body").on("click", "[data-gameaction]", function() {
       main.toggleFavorite(name);
       break;
     case "edit":
-      main.editGame(name)
+      $('.game-editor').addClass('active');
+      $('.container').addClass('dim');
+
+      $('[data-gameeditor="thumbnail"]').attr('style', "background-image: url('" + main.settings.games[name].cover + "');'");
+      $('[data-gameeditor="name"]').val(main.settings.games[name].title);
+      $('[data-gameeditor="launch"]').val(main.settings.games[name].launch);
       break;
+  }
+});
+
+/*
+data-cover
+data-dir
+data-launch
+data-noArt
+data-title
+data-vendor
+*/
+
+$('body').on('click', '.editor-thumbnail', function() {
+  $('#thumbnailDialog').trigger('click');
+});
+
+$('body').on('change', '#thumbnailDialog', function() {
+  var data = $('#thumbnailDialog')[0].files[0];
+  console.log(data)
+});
+
+$('body').on('click', '[data-gameeditor="submit"]', function() {
+  var name = $('.game-card[data-context]').data('name');
+  main.editGame(name);
+  $('.game-editor.active').removeClass('active');
+  $('.container').removeClass('dim');
+});
+
+$('body').on('keypress', '[data-gameeditor="name"]', '[data-gameeditor="launch"]', function(e) {
+  if (e.which === 13) {
+    var name = $('.game-card[data-context]').data('name');
+    main.editGame(name);
+    $('.game-editor.active').removeClass('active');
+    $('.container').removeClass('dim');
   }
 });
 
