@@ -1,5 +1,10 @@
 # Apex-Library
-A lightweight, beautiful game library consolidator and launcher.
+A lightweight, beautiful game library consolidator and launcher built on NodeJS and Node-Webkit. Supports common game libraries and custom games such as DRM Free (*pirated*) games.
+
+### FAQ
+1. **How do I add games that require Steam or UPlay?**
+  - You can add a custom game under `Settings` -> `Add Custom Game`, and for the launch code, use the Steam or Uplay run URI.
+    * **Example:** `steam://rungameid/{GAME ID}`
 
 ### Features
 Feature | Status
@@ -10,11 +15,10 @@ Origin Support | `Working`
 Uplay Support | Not Started
 EPIC Launcher Support | Not Started
 GOG Galaxy Support | Not Started
-Extra / Non-Launcher Games | Not Started
+Extra / Non-Launcher Games | `Working`
 --- | ---
-Settings | Not Started
+Settings | `Working`
 Custom Cover Art | `Working`
-Custom Games | `Working`
 Edit Games | `Started`
 Favorites | `Working`
 
