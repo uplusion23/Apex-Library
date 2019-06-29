@@ -14,7 +14,7 @@ Extra / Non-Launcher Games | Not Started
 --- | ---
 Settings | Not Started
 Custom Cover Art | `Working`
-Custom Games | Not Started
+Custom Games | `Working`
 Edit Games | `Started`
 Favorites | `Working`
 
