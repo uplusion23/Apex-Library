@@ -81,7 +81,8 @@ function getBattleNetGames() {
         launch: '*' + battleNetPath + '\\Battle.net.exe* --exec=*launch '  + launchCode + '*',
         noArt: true,
         vendor: "battlenet",
-        remove: false
+        remove: false,
+        rawtitle: battleNetGames[x].name
       }
 
       main.getCoverArtByName(battleNetGames[x].name, function(coverArt) {

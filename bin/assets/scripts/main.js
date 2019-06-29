@@ -151,6 +151,7 @@ var main = {
   loadGames: function() {
     for (var x = 0; x < Object.keys(main.settings.games).length; x++) {
       var game =  main.settings.games[Object.keys(main.settings.games)[x]];
+      game.rawtitle = Object.keys(main.settings.games)[x];
       main.addGame(game)
     }
   },
@@ -161,21 +162,22 @@ var main = {
 
     $('.game-card[data-name="' + name + '"] .card-title span').text(main.settings.games[name].title);
     $('.game-card[data-name="' + name + '"]').attr('data-launch', main.settings.games[name].launch);
+    $('.game-card[data-name="' + name + '"]').attr('style', "background-image: url('" + main.settings.games[name].cover + "');'");
     $('.game-card[data-name="' + name + '"] img').attr('src', './assets/images/vendor/' + main.settings.games[name].vendor + '.png');
   },
   addGame: function(data) {
-    var gameName = data.title;
-    if (typeof main.settings.games[data.title].remove !== undefined && main.settings.games[data.title].remove == true) { return; }
-    if (main.temp.gameStorage[data.title] !== undefined) {
+    var gameName = data.rawtitle;
+    if (typeof main.settings.games[data.rawtitle].remove !== undefined && main.settings.games[data.rawtitle].remove == true) { return; }
+    if (main.temp.gameStorage[data.rawtitle] !== undefined) {
       return;
     }
-    if (main.settings.games[data.title] === undefined) {
-      main.settings.games[data.title] = data;
+    if (main.settings.games[data.rawtitle] === undefined) {
+      main.settings.games[data.rawtitle] = data;
     } else {
-      data = main.settings.games[data.title];
+      data = main.settings.games[data.rawtitle];
     }
     var noArt = (data.noArt == true) ? "<span class=\"no-art\">" + data.title + "</span>" : "";
-    var favorite = (main.settings.favorites[data.title] == true) ? " favorite" : "";
+    var favorite = (main.settings.favorites[data.rawtitle] == true) ? " favorite" : "";
 
     if (data.noArt == true) { data.cover = "linear-gradient(to right, #2b5876, #4e4376);" }
     var $ele = '\
@@ -188,7 +190,7 @@ var main = {
   </div>\
   ';
     $($ele).appendTo('.library');
-    main.temp.gameStorage[data.title] = true;
+    main.temp.gameStorage[data.rawtitle] = true;
   }
 }
 
@@ -320,9 +322,9 @@ $('body').on('change', '#thumbnailDialog', function() {
 
   if (data !== null) {
     var name = data.split('/').pop();
-    console.log(data.toString());
-    console.log('url(./userStorage/art/' + name.toString() + ')');
-    fs.copyFileSync(data.toString(), 'userStorage/art/' + name.toString());
+    if (!fs.existsSync('userStorage/art/' + name.toString())) {
+      fs.copyFileSync(data.toString(), 'userStorage/art/' + name.toString());
+    }
     $('.editor-thumbnail').attr('style', "background-image: url('/userStorage/art/" + name.toString() + "');");
   }
 });

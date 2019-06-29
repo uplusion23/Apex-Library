@@ -31,7 +31,8 @@ function getOriginGames() {
         launch: "origin2://game/launch?offerIds=" + launchString,
         noArt: true,
         vendor: "origin",
-        remove: false
+        remove: false,
+        rawtitle: jsonManifest.DiPManifest.gameTitles.gameTitle[0]._text
       }
 
       // Seems to work, but too fast on initial call, that is messes up.
