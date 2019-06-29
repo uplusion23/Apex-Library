@@ -13,15 +13,19 @@ var win = nw.Window.get();
 var winMax = false;
 
 var main = {
-  dummy: {
+  default: {
     gameDataFormat: {
-      "title": "Game Human Name",
-      "dir": "C:/Game/Game.exe",
-      "cover": "C:/Game/cover.png",
-      "launch": "steam://run/appid",
-      "favorite": true,
-      "noArt": false
+      "title": "DEFAULT GAME",
+      "dir": "NONE",
+      "cover": "",
+      "launch": "steam://run/310",
+      "favorite": false,
+      "noArt": true,
+      "vendor": "apex"
     }
+  },
+  temp: {
+    gameStorage: []
   },
   settings: {
     favorites: [],
@@ -51,8 +55,9 @@ var main = {
     cb();
   },
   init: function() {
-    this.setup(function() {
+    main.setup(function() {
       main.loadSettings(function() {
+        main.loadGames();
         readSteamGames();
         getOriginGames();
         getBattleNetGames();
@@ -112,10 +117,8 @@ var main = {
           if (gameArtData == undefined) {
             gameArtData = output[0]
           }
-          console.log(output)
           SGDBClient.getGrids({type: 'game', id: gameArtData.id, styles: ['blurred', 'material', "alternate", "no_logo"]})
             .then((output) => {
-              console.log(gameArtData)
               if (output[0] == undefined) {
                 callback(undefined);
               } else {
@@ -145,6 +148,12 @@ var main = {
       $('[data-name="' + name + '"]').addClass('favorite');
     }
   },
+  loadGames: function() {
+    for (var x = 0; x < Object.keys(main.settings.games).length; x++) {
+      var game =  main.settings.games[Object.keys(main.settings.games)[x]];
+      main.addGame(game)
+    }
+  },
   editGame: function(name) {
     main.settings.games[name].cover = $('[data-gameeditor="thumbnail"]').css('background-image').replace('url(','').replace(')','').replace(/\"/gi, "");
     main.settings.games[name].title = $('[data-gameeditor="name"]').val();
@@ -156,19 +165,21 @@ var main = {
   },
   addGame: function(data) {
     var gameName = data.title;
+    if (typeof main.settings.games[data.title].remove !== undefined && main.settings.games[data.title].remove == true) { return; }
+    if (main.temp.gameStorage[data.title] !== undefined) {
+      return;
+    }
     if (main.settings.games[data.title] === undefined) {
       main.settings.games[data.title] = data;
     } else {
       data = main.settings.games[data.title];
     }
-
-    console.log(data)
     var noArt = (data.noArt == true) ? "<span class=\"no-art\">" + data.title + "</span>" : "";
     var favorite = (main.settings.favorites[data.title] == true) ? " favorite" : "";
 
     if (data.noArt == true) { data.cover = "linear-gradient(to right, #2b5876, #4e4376);" }
     var $ele = '\
-  <div data-launch="' + data.launch + '" data-vendor="' + data.vendor + '" data-name="' + gameName + '" class="game-card' + favorite + '" style="background-image: url(\'' + data.cover + '\');">\
+  <div data-launch="' + data.launch + '" data-vendor="' + data.vendor + '" data-name="' + gameName + '" class="game-card' + favorite + '" style="background-image: ' + data.cover + '">\
    ' + noArt + '\
    <img src="./assets/images/vendor/' + data.vendor + '.png" />\
    <div class="card-title">\
@@ -177,6 +188,7 @@ var main = {
   </div>\
   ';
     $($ele).appendTo('.library');
+    main.temp.gameStorage[data.title] = true;
   }
 }
 
@@ -270,46 +282,83 @@ $("body").on("click", "[data-gameaction]", function() {
       main.toggleFavorite(name);
       break;
     case "edit":
-      $('.game-editor').addClass('active');
+      $('.game-editor').addClass('active editing');
       $('.container').addClass('dim');
 
       $('[data-gameeditor="thumbnail"]').attr('style', "background-image: url('" + main.settings.games[name].cover + "');'");
       $('[data-gameeditor="name"]').val(main.settings.games[name].title);
       $('[data-gameeditor="launch"]').val(main.settings.games[name].launch);
       break;
+    case "remove":
+      main.settings.games[name].remove = true;
+      $('.game-card[data-context]').fadeOut();
+      break;
   }
 });
 
-/*
-data-cover
-data-dir
-data-launch
-data-noArt
-data-title
-data-vendor
-*/
+$("body").on("click", "[data-action]", function() {
+  var action = $(this).data('action');
+
+  switch (action) {
+    case "addnewgame":
+      $('.game-editor').addClass('active');
+      $('.container').addClass('dim');
+
+      $('[data-gameeditor="thumbnail"]').attr('style', "background-image: url('assets/images/thumbnail.jpg');");
+      $('[data-gameeditor="name"]').val("");
+      $('[data-gameeditor="launch"]').val("");
+      break;
+  }
+});
 
 $('body').on('click', '.editor-thumbnail', function() {
   $('#thumbnailDialog').trigger('click');
 });
 
 $('body').on('change', '#thumbnailDialog', function() {
-  var data = $('#thumbnailDialog')[0].files[0];
-  console.log(data)
+  var data = $('#thumbnailDialog')[0].files[0].path.replace(/\\/g, '/');
+
+  if (data !== null) {
+    var name = data.split('/').pop();
+    console.log(data.toString());
+    console.log('url(./userStorage/art/' + name.toString() + ')');
+    fs.copyFileSync(data.toString(), 'userStorage/art/' + name.toString());
+    $('.editor-thumbnail').attr('style', "background-image: url('/userStorage/art/" + name.toString() + "');");
+  }
 });
 
 $('body').on('click', '[data-gameeditor="submit"]', function() {
-  var name = $('.game-card[data-context]').data('name');
-  main.editGame(name);
-  $('.game-editor.active').removeClass('active');
+  if ($(this).parent().parent().hasClass("editing")) {
+    var name = $('.game-card[data-context]').data('name');
+    main.editGame(name);
+  } else {
+    var data = main.default.gameDataFormat;
+    data.cover = $('[data-gameeditor="thumbnail"]').css('background-image').replace('url(','').replace(')','').replace(/\"/gi, "");
+    data.title = $('[data-gameeditor="name"]').val();
+    data.launch = $('[data-gameeditor="launch"]').val();
+    if ($('[data-gameeditor="thumbnail"]').css('background-image').replace('url(','').replace(')','').replace(/\"/gi, "").indexOf('assets/images/thumbnail.jpg') == -1) {
+      data.noArt = false;
+    }
+    main.addGame(data);
+  }
+  $('.game-editor.active').removeClass('active editing');
   $('.container').removeClass('dim');
 });
 
 $('body').on('keypress', '[data-gameeditor="name"]', '[data-gameeditor="launch"]', function(e) {
   if (e.which === 13) {
-    var name = $('.game-card[data-context]').data('name');
-    main.editGame(name);
-    $('.game-editor.active').removeClass('active');
+    console.log($(this).parent().parent().parent())
+    if ($(this).parent().parent().parent().hasClass("editing")) {
+      var name = $('.game-card[data-context]').data('name');
+      main.editGame(name);
+    } else {
+      var data = main.default.gameDataFormat;
+      data.cover = $('[data-gameeditor="thumbnail"]').css('background-image').replace('url(','').replace(')','').replace(/\"/gi, "");
+      data.title = $('[data-gameeditor="name"]').val();
+      data.launch = $('[data-gameeditor="launch"]').val();
+      main.addGame(data);
+    }
+    $('.game-editor.active').removeClass('active editing');
     $('.container').removeClass('dim');
   }
 });

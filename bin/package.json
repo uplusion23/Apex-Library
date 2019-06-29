@@ -1,6 +1,7 @@
 {
   "main": "main.html",
   "name": "ApexLibrary",
+  "version": "0.7.1",
   "window": {
     "title": "Apex Library",
     "width": 1600,
@@ -8,7 +9,8 @@
     "min_width": 1600,
     "min_height": 900,
     "frame": false,
-    "toolbar": false
+    "toolbar": false,
+    "icon": "apex.png"
   },
   "chromium-args": "--enable-experimental-web-platform-features",
   "dependencies": {

@@ -13,7 +13,7 @@ GOG Galaxy Support | Not Started
 Extra / Non-Launcher Games | Not Started
 --- | ---
 Settings | Not Started
-Custom Cover Art | Not Started
+Custom Cover Art | `Working`
 Custom Games | Not Started
 Edit Games | `Started`
 Favorites | `Working`
