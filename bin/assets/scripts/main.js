@@ -63,7 +63,8 @@ var main = {
         readSteamGames();
         getOriginGames();
         getBattleNetGames();
-        getUplayGames()
+        getUplayGames();
+        $('.container').removeClass('launching');
       });
     });
   },
@@ -167,6 +168,23 @@ var main = {
     $('.game-card[data-name="' + name + '"]').attr('data-launch', main.settings.games[name].launch);
     $('.game-card[data-name="' + name + '"]').attr('style', "background-image: url('" + main.settings.games[name].cover + "');'");
     $('.game-card[data-name="' + name + '"] img').attr('src', './assets/images/vendor/' + main.settings.games[name].vendor + '.png');
+  },
+  addCustomGame: function(data) {
+    console.log(data);
+    if (data.cover.indexOf('assets/images/thumbnail.jpg')) {
+      main.getCoverArtByName(data.rawtitle, function(coverArt) {
+        if (coverArt == undefined) {
+          console.groupCollapsed("Cover Error")
+          console.log("Unable to find cover art for game: " + data.rawtitle);
+          console.groupEnd();
+          data.noArt = true;
+        } else {
+          data.noArt = false;
+        }
+        data.cover = coverArt;
+        main.addGame(data);
+      });
+    }
   },
   addGame: function(data) {
     var gameName = data.rawtitle;
@@ -345,7 +363,7 @@ $('body').on('click', '[data-gameeditor="submit"]', function() {
     if ($('[data-gameeditor="thumbnail"]').css('background-image').replace('url(','').replace(')','').replace(/\"/gi, "").indexOf('assets/images/thumbnail.jpg') == -1) {
       data.noArt = false;
     }
-    main.addGame(data);
+    main.addCustomGame(data);
   }
   $('.game-editor.active').removeClass('active editing');
   $('.container').removeClass('dim');
@@ -369,12 +387,15 @@ $('body').on('keypress', '[data-gameeditor="name"]', '[data-gameeditor="launch"]
   }
 });
 
+$('a[target=_blank]').on('click', function(){
+   require('nw.gui').Shell.openExternal( this.href );
+   return false;
+});
+
 $(document).ready(function() {
+  $('[data-version]').text("Version " + require('./package.json').version)
   var backgrounds = fs.readdirSync('./assets/images/backgrounds/');
   var chosenFile = backgrounds[Math.floor(Math.random() * backgrounds.length)];
   $('.container').css("background-image", "var(--gradient-1-o), url('../assets/images/backgrounds/" + chosenFile + "')");
-  setTimeout(function() {
-    $('.container').removeClass('launching');
-  }, 1000);
   main.init();
 });

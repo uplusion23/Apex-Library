@@ -451,6 +451,36 @@ html, body {
   font-weight: 300;
 }
 
+.page .page-description span {
+  display: block;
+  position: relative;
+  margin: 10px 0 0 0;
+  padding: 0;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: #FAFAFA;
+  text-decoration: none;
+}
+
+.page .page-description .link {
+  display: block;
+  position: relative;
+  margin: 10px 0 0 0;
+  padding: 0;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: #FAFAFA;
+  text-decoration: none;
+}
+
+.page .page-description .link a {
+  padding: 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #c33b5e;
+  text-decoration: none;
+}
+
 .page .card {
   display: block;
   position: relative;

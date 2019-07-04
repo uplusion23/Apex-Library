@@ -12,7 +12,7 @@ Feature | Status
 Blizzard App Support | `Working`
 Steam Support | `Working`
 Origin Support | `Working`
-Uplay Support | Not Started
+Uplay Support | `Working`
 EPIC Launcher Support | Not Started
 GOG Galaxy Support | Not Started
 Extra / Non-Launcher Games | `Working`
@@ -33,4 +33,4 @@ Favorites | `Working`
 
 ![alt text](https://i.imgur.com/kBlHow1.png "Library Page")
 
-![alt text](https://media.giphy.com/media/lnfgomzMzPfqhagj6G/giphy.gif)
+[![Youtube Demo](http://i3.ytimg.com/vi/RYdG7p6Ixy8/maxresdefault.jpg)](https://www.youtube.com/watch?v=RYdG7p6Ixy8)
