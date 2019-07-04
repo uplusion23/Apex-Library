@@ -21,15 +21,16 @@ var main = {
       "launch": "steam://run/310",
       "favorite": false,
       "noArt": true,
-      "vendor": "apex"
+      "vendor": "apex",
+      "remove": false
     }
   },
   temp: {
     gameStorage: []
   },
   settings: {
-    favorites: [],
-    games: []
+    favorites: {},
+    games: {}
   },
   intervals: {
     _process: null
@@ -42,8 +43,9 @@ var main = {
       fs.mkdirSync("./userStorage/art/");
     }
     if (!fs.existsSync("settings.json")) {
-      fs.writeFile('settings.json', JSON.stringify(main.settings, null, 2), 'utf8');
+      fs.writeFileSync('settings.json', JSON.stringify(main.settings, null, 2), 'utf8');
     }
+
     cb();
   },
   loadSettings: function(cb) {
@@ -61,6 +63,7 @@ var main = {
         readSteamGames();
         getOriginGames();
         getBattleNetGames();
+        getUplayGames()
       });
     });
   },
@@ -167,7 +170,6 @@ var main = {
   },
   addGame: function(data) {
     var gameName = data.rawtitle;
-    if (typeof main.settings.games[data.rawtitle].remove !== undefined && main.settings.games[data.rawtitle].remove == true) { return; }
     if (main.temp.gameStorage[data.rawtitle] !== undefined) {
       return;
     }
@@ -176,12 +178,13 @@ var main = {
     } else {
       data = main.settings.games[data.rawtitle];
     }
+    if (typeof main.settings.games[data.rawtitle] !== undefined && main.settings.games[data.rawtitle].remove == true) { return; }
     var noArt = (data.noArt == true) ? "<span class=\"no-art\">" + data.title + "</span>" : "";
     var favorite = (main.settings.favorites[data.rawtitle] == true) ? " favorite" : "";
-
-    if (data.noArt == true) { data.cover = "linear-gradient(to right, #2b5876, #4e4376);" }
+    var art = null;
+    if (data.noArt == true) { art = "linear-gradient(to right, #2b5876, #4e4376);" } else { art = 'url(\'' + data.cover + '\')' }
     var $ele = '\
-  <div data-launch="' + data.launch + '" data-vendor="' + data.vendor + '" data-name="' + gameName + '" class="game-card' + favorite + '" style="background-image: ' + data.cover + '">\
+  <div data-launch="' + data.launch + '" data-vendor="' + data.vendor + '" data-name="' + gameName + '" class="game-card' + favorite + '" style="background-image: ' + art + '">\
    ' + noArt + '\
    <img src="./assets/images/vendor/' + data.vendor + '.png" />\
    <div class="card-title">\
@@ -337,6 +340,7 @@ $('body').on('click', '[data-gameeditor="submit"]', function() {
     var data = main.default.gameDataFormat;
     data.cover = $('[data-gameeditor="thumbnail"]').css('background-image').replace('url(','').replace(')','').replace(/\"/gi, "");
     data.title = $('[data-gameeditor="name"]').val();
+    data.rawtitle = $('[data-gameeditor="name"]').val();
     data.launch = $('[data-gameeditor="launch"]').val();
     if ($('[data-gameeditor="thumbnail"]').css('background-image').replace('url(','').replace(')','').replace(/\"/gi, "").indexOf('assets/images/thumbnail.jpg') == -1) {
       data.noArt = false;

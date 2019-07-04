@@ -74,10 +74,9 @@ function getBattleNetGames() {
           launchCode = "Pro";
           break;
       }
-
       var data = {
         title: battleNetGames[x].name,
-        dir: battleNetGames[x].path,
+        dir: battleNetGames[x].path + "\\",
         launch: '*' + battleNetPath + '\\Battle.net.exe* --exec=*launch '  + launchCode + '*',
         noArt: true,
         vendor: "battlenet",
