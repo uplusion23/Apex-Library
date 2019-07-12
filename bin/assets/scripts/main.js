@@ -29,8 +29,8 @@ var main = {
     gameStorage: []
   },
   settings: {
-    favorites: {},
-    games: {}
+    games: {},
+    categories: []
   },
   intervals: {
     _process: null
@@ -59,6 +59,9 @@ var main = {
   init: function() {
     main.setup(function() {
       main.loadSettings(function() {
+        for (var x = 0; x < main.settings.categories.length; x++) {
+          $('.context-game-card .submenu[data-submenu="categories"]').append('<span>' + main.settings.categories[x] + '</span>');
+        }
         main.loadGames();
         readSteamGames();
         getOriginGames();
@@ -144,12 +147,25 @@ var main = {
         });
       }
   },
+  addCategory: function(name) {
+    $('.library').append('<div class="category" data-category="' + name + '"><h2><i class="la la-bookmark"></i>' + name + '</h2></div>');
+    $('.context-game-card .submenu[data-submenu="categories"]').append('<span>' + name + '</span>');
+    if (main.settings.categories.includes(name)) {
+      return;
+    }
+    main.settings.categories.push(name);
+  },
+  changeCategory: function(name, category) {
+    main.settings.games[name].category = category;
+    $('[data-name="' + name + '"]').detach().appendTo('[data-category="' + main.settings.games[name].category + '"]');
+  },
   toggleFavorite: function(name) {
-    main.settings.favorites[name] = !main.settings.favorites[name];
-    if (main.settings.favorites[name] == false) {
-      $('[data-name="' + name + '"]').removeClass('favorite');
+    if (main.settings.games[name].category !== "default") {
+      main.settings.games[name].category = "default";
+      $('[data-name="' + name + '"]').removeClass('favorite').detach().appendTo('[data-category="default"]');;
     } else {
-      $('[data-name="' + name + '"]').addClass('favorite');
+      main.settings.games[name].category = "favorite";
+      $('[data-name="' + name + '"]').addClass('favorite').detach().appendTo('[data-category="' + main.settings.games[name].category + '"]');
     }
   },
   loadGames: function() {
@@ -170,7 +186,6 @@ var main = {
     $('.game-card[data-name="' + name + '"] img').attr('src', './assets/images/vendor/' + main.settings.games[name].vendor + '.png');
   },
   addCustomGame: function(data) {
-    console.log(data);
     if (data.cover.indexOf('assets/images/thumbnail.jpg')) {
       main.getCoverArtByName(data.rawtitle, function(coverArt) {
         if (coverArt == undefined) {
@@ -197,8 +212,11 @@ var main = {
       data = main.settings.games[data.rawtitle];
     }
     if (typeof main.settings.games[data.rawtitle] !== undefined && main.settings.games[data.rawtitle].remove == true) { return; }
+    if ($('[data-category="' + data.category + '"]').length == 0) {
+      $('.library').append('<div class="category" data-category="' + data.category + '"><h2><i class="la la-bookmark"></i>' + data.category + '</h2></div>');
+    }
     var noArt = (data.noArt == true) ? "<span class=\"no-art\">" + data.title + "</span>" : "";
-    var favorite = (main.settings.favorites[data.rawtitle] == true) ? " favorite" : "";
+    var favorite = (main.settings.games[data.rawtitle].category == "favorite") ? " favorite" : "";
     var art = null;
     if (data.noArt == true) { art = "linear-gradient(to right, #2b5876, #4e4376);" } else { art = 'url(\'' + data.cover + '\')' }
     var $ele = '\
@@ -210,7 +228,7 @@ var main = {
    </div>\
   </div>\
   ';
-    $($ele).appendTo('.library');
+    $($ele).appendTo('[data-category="' + data.category + '"]');
     main.temp.gameStorage[data.rawtitle] = true;
   }
 }
@@ -286,6 +304,7 @@ $("body").on("contextmenu", ".context", function(e) {
 });
 
 $("body").on("click", function(e) {
+  if ($(e.target).data('gameaction') == "category" || $(e.target).parent().data('gameaction') == "category") { return; }
   $('.context').css({
     opacity: 0,
     "pointer-events": "none"
@@ -294,6 +313,7 @@ $("body").on("click", function(e) {
 
 $("body").on('click', '.dimmer', function() {
   $('.game-editor.active').removeClass('active');
+  $('.category-dialog.active').removeClass('active');
   $('.container').removeClass('dim');
 });
 
@@ -311,6 +331,8 @@ $("body").on("click", "[data-gameaction]", function() {
       $('[data-gameeditor="thumbnail"]').attr('style', "background-image: url('" + main.settings.games[name].cover + "');'");
       $('[data-gameeditor="name"]').val(main.settings.games[name].title);
       $('[data-gameeditor="launch"]').val(main.settings.games[name].launch);
+      break;
+    case "category":
       break;
     case "remove":
       main.settings.games[name].remove = true;
@@ -330,6 +352,12 @@ $("body").on("click", "[data-action]", function() {
       $('[data-gameeditor="thumbnail"]').attr('style', "background-image: url('assets/images/thumbnail.jpg');");
       $('[data-gameeditor="name"]').val("");
       $('[data-gameeditor="launch"]').val("");
+      break;
+    case "addcategory":
+      $('.category-dialog').addClass('active');
+      $('.container').addClass('dim');
+
+      $('[data-categorydialog="name"]').val("");
       break;
   }
 });
@@ -365,13 +393,12 @@ $('body').on('click', '[data-gameeditor="submit"]', function() {
     }
     main.addCustomGame(data);
   }
-  $('.game-editor.active').removeClass('active editing');
+  $('.category-dialog.active').removeClass('active editing');
   $('.container').removeClass('dim');
 });
 
 $('body').on('keypress', '[data-gameeditor="name"]', '[data-gameeditor="launch"]', function(e) {
   if (e.which === 13) {
-    console.log($(this).parent().parent().parent())
     if ($(this).parent().parent().parent().hasClass("editing")) {
       var name = $('.game-card[data-context]').data('name');
       main.editGame(name);
@@ -383,6 +410,37 @@ $('body').on('keypress', '[data-gameeditor="name"]', '[data-gameeditor="launch"]
       main.addGame(data);
     }
     $('.game-editor.active').removeClass('active editing');
+    $('.container').removeClass('dim');
+  }
+});
+
+$('body').on('click', '[data-categorydialog="submit"]', function() {
+  $('.category-dialog.active').removeClass('active');
+  $('.container').removeClass('dim');
+  main.addCategory($('[data-categorydialog="name"]').val());
+});
+
+$('body').on('mouseover', '[data-gameaction="category"]', function() {
+  $('.context-game-card .submenu[data-submenu="categories"]').addClass('active');
+});
+
+$('body').on('mouseleave', '.context-game-card .submenu[data-submenu="categories"]', function() {
+  $('.context-game-card .submenu[data-submenu="categories"]').removeClass('active');
+});
+
+$('body').on('click', '.context-game-card .submenu[data-submenu="categories"] span', function() {
+  var name = $('.game-card[data-context]').data('name');
+  main.changeCategory(name, $(this).text());
+});
+
+$('body').on('click', '.category h2', function() {
+  $(this).parent().children('.game-card').toggleClass('hidden');
+});
+
+$('body').on('keypress', '[data-categorydialog="name"]', function(e) {
+  if (e.which === 13) {
+    main.addCategory($('[data-categorydialog="name"]').val());
+    $('.category-dialog.active').removeClass('active');
     $('.container').removeClass('dim');
   }
 });

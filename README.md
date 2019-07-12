@@ -21,6 +21,7 @@ Settings | `Working`
 Custom Cover Art | `Working`
 Edit Games | `Started`
 Favorites | `Working`
+Categories | `Working`
 
 ### Development
 1. Install NodeJS
@@ -29,8 +30,14 @@ Favorites | `Working`
 4. Get an API key from [Steam Icon DB](https://www.steamgriddb.com/) and place it in a JSON file in the `bin` folder as `key.json`
 5. Start the program with the included executable `ApexLibrary.exe`
 
+## Changelog
+### [1.0.0] - 07/11/2019
+- Initial executable release.
+
+
 ## Images
 
 ![alt text](https://i.imgur.com/kBlHow1.png "Library Page")
 
+Click to view the video.
 [![Youtube Demo](http://i3.ytimg.com/vi/RYdG7p6Ixy8/maxresdefault.jpg)](https://www.youtube.com/watch?v=RYdG7p6Ixy8)

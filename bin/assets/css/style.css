@@ -62,10 +62,58 @@ html, body {
   user-select: none;
   background-color: rgba(155, 89, 182, 0);
   transition: var(--transition);
+  box-sizing: border-box;
 }
 
 .context-game-card .inner span:hover {
   background-color: rgba(155, 89, 182, 0.4);
+}
+
+.context-game-card .submenu {
+  display: block;
+  position: absolute;
+  width: 150px;
+  min-height: 30px;
+  left: 150px;
+  top: 60px;
+  transition: var(--transition);
+  opacity: 0;
+  backdrop-filter: blur(0px);
+}
+
+.context-game-card .submenu.active {
+  opacity: 1;
+  backdrop-filter: blur(30px);
+}
+
+.context-game-card .submenu span {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  color: #DEDEDE;
+  padding: 0 10px;
+  cursor: pointer;
+  user-select: none;
+  background-color: rgba(155, 89, 182, 0);
+  transition: var(--transition);
+  box-sizing: border-box;
+  text-transform: capitalize;
+}
+
+.context-game-card .submenu span:hover {
+  background-color: rgba(155, 89, 182, 0.4);
+}
+
+.conteaxt-game-card .inner span[data-gameaction="category"] {
+}
+
+.context-game-card .inner hr {
+  width: 100%;
+  height: 1px;
+  border: none;
+  background: rgba(255,255,255,0.17);
 }
 
 .frame {
@@ -160,6 +208,8 @@ html, body {
   width: 100%;
   height: 100%;
   background: linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(44,62,80,0.9) 80%, rgba(44,62,80,1) 100%);
+  animation: Gradient 15s ease infinite;
+  background-size: 400% 400%;
 }
 
 .container .dimmer {
@@ -270,14 +320,36 @@ html, body {
   user-select: none;
 }
 
-
-.container > .page .library .favorites-seperator {
-  display: block;
+.container > .page .library .category {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   position: relative;
-  flex-grow: 1;
+  flex-grow: 2;
   width: 100%;
-  height: 20px;
-  order: 2;
+  transition: var(--transition);
+}
+
+.container > .page .library .category > h2 {
+  display: block;
+  flex-grow: 2;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  color: #FAFAFA;
+  font-weight: 300;
+  text-transform: capitalize;
+  cursor: pointer;
+  background: #2C3A47;
+  border-radius: 8px;
+  margin: 0 15px 10px 0;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+.container > .page .library .category[data-category="favorite"] > h2 {
+  background: #FCD736;
+  color: #212121;
 }
 
 .container > .page .library .game-card {
@@ -293,6 +365,15 @@ html, body {
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
   cursor: pointer;
   order: 3;
+  animation: game-card 0.6s ease;
+  transition: var(--transition);
+}
+
+.container > .page .library .game-card.hidden {
+  opacity: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
 }
 
 .container > .page .library .game-card.favorite {
@@ -350,6 +431,37 @@ html, body {
   opacity: 0.9;
   padding: 0;
   font-size: 0.9rem;
+}
+
+.container .category-dialog {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  bottom: -20px;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  backdrop-filter: blur(0);
+  transition: var(--transition);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 12;
+  padding: 25px 30px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container .category-dialog.active {
+  opacity: 1;
+  pointer-events: auto;
+  bottom: 0;
+  z-index: 12;
+  backdrop-filter: blur(30px);
+}
+
+.container .category-dialog .inputs {
+  flex-grow: 1;
+  margin-left: 40px;
 }
 
 .container .game-editor {
@@ -509,6 +621,22 @@ html, body {
   font-size: 17px;
 }
 
+.page .card .block {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.page .card .block span {
+  position: relative;
+  line-height: 17px;
+  font-size: 0.95rem;
+  margin-right: 20px;
+  box-sizing: border-box;
+  padding: 7px 0 7px 0;
+  color: #CECECE;
+}
+
 .btn {
   display: inline-block;
   position: relative;
@@ -523,6 +651,7 @@ html, body {
   border-radius: 2px;
   text-decoration: none;
   transition: var(--transition);
+  flex-shrink: 0;
 }
 
 .btn:hover {
@@ -640,26 +769,37 @@ html, body {
           animation: dash 2.5s cubic-bezier(0.35, 0.04, 0.63, 0.95) infinite;
 }
 
-@-webkit-keyframes dash {
-  to {
-    stroke-dashoffset: 136;
-  }
-}
-
 @keyframes dash {
   to {
     stroke-dashoffset: 136;
   }
 }
-@-webkit-keyframes rotate {
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
-}
+
 @keyframes rotate {
   100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+      transform: rotate(360deg);
   }
+}
+
+@keyframes game-card {
+  0% {
+    transform: translateY(25px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
 }

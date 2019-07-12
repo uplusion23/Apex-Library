@@ -9,7 +9,12 @@
       <div class="inner">
         <span data-gameaction="favorite">Favorite</span>
         <span data-gameaction="edit">Edit</span>
+        <span data-gameaction="category">Category <i class="la la-angle-right"></i></span>
+        <hr />
         <span data-gameaction="remove">Remove</span>
+      </div>
+      <div class="submenu" data-submenu="categories">
+        <span>Default</span>
       </div>
     </div>
     <div class="container launching">
@@ -21,8 +26,7 @@
       </div>
       <div class="page active" data-page="library">
         <div class="library">
-          <div class="favorites-seperator">
-          </div>
+          <div class="category" data-category="favorite"><h2><i class="la la-bookmark"></i>Favorites</h2></div>
         </div>
       </div>
       <div class="page" data-page="settings">
@@ -30,7 +34,14 @@
           <h1 class="page-title">Settings</h1>
           <div class="card">
             <div class="head">Games</div>
-            <a class="btn" data-action="addnewgame">Add Custom Game</a>
+            <div class="block">
+              <span>Add a custom non-launcher game, or a program. You can change the category of the added game by right-clicking it after creation. If no image is selected when entering the game information, Apex Library will automatically attempt to grab an image.</span>
+              <a class="btn" data-action="addnewgame">Add Custom Game</a>
+            </div>
+            <div class="block">
+              <span>Add a category. Categories help sort your programs and games. You can name them anything such as "FPS" or "Tools".</span>
+              <a class="btn" data-action="addcategory">Add Category</a>
+            </div>
           </div>
         </div>
       </div>
@@ -41,9 +52,21 @@
             <span class="page-description">An open-source game library consolidator and launcher. Automatically downloads the cover art for your entire library, supporting Blizzard games, Steam games, and Origin.
               <span class="link"><i class="la la-github"></i> View the project on <a target="_blank" href="https://github.com/uplusion23/Apex-Library">Github</a></span>
               <span class="link"><i class="la la-html5"></i> Developer <a target="_blank" href="http://uplusion23.net">Website</a></span>
+              <span class="link"><i class="la la-paypal"></i> Support the development, and <a target="_blank" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=uplusion23%40gmail.com&item_name=Apex+Library+Development&currency_code=USD&source=url">Donate</a></span>
               <span data-version></span>
             </span>
           </div>
+        </div>
+      </div>
+      <div class="category-dialog">
+        <div class="inputs">
+          <div class="material-input">
+            <input type="text" required="" data-categorydialog="name"/>
+            <label>Category Name</label><span></span>
+          </div>
+        </div>
+        <div class="submit">
+          <a class="btn" data-categorydialog="submit">Save Changes</a>
         </div>
       </div>
       <div class="game-editor">
