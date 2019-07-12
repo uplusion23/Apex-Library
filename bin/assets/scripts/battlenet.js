@@ -82,7 +82,7 @@ function getBattleNetGames() {
         vendor: "battlenet",
         remove: false,
         rawtitle: battleNetGames[x].name,
-        category: "default"
+        category: "Default"
       }
 
       main.getCoverArtByName(battleNetGames[x].name, function(coverArt) {

@@ -88,8 +88,14 @@ typings/
 .dynamodb/
 
 bin/userStorage/
-bin/key.json
+bin/key.js
 settings.json
 *.psd
 *.ico
 nwjs/
+release/
+node_modules/
+build/
+cache/
+build.js
+package-lock.json

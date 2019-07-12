@@ -14,7 +14,7 @@ function readSteamAcf(file, rootPath) {
     vendor: "steam",
     remove: false,
     rawtitle: acfdata.name,
-    category: "default"
+    category: "Default"
   }
   main.getCoverArtById(acfdata.appid, function(coverArt) {
     if (coverArt == undefined) {

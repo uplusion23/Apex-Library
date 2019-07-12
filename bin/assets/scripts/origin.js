@@ -33,7 +33,7 @@ function getOriginGames() {
         vendor: "origin",
         remove: false,
         rawtitle: jsonManifest.DiPManifest.gameTitles.gameTitle[0]._text,
-        category: "default"
+        category: "Default"
       }
       // Seems to work, but too fast on initial call, that is messes up.
       main.getCoverArtByName(data.title, function(coverArt) {

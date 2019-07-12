@@ -6,7 +6,7 @@ const open = require('open');
 const https = require('https');
 const SGDB = require('steamgriddb');
 const convert = require('xml-js');
-const privateKey = require('./key.json');
+nw.Window.get().evalNWBin(null, 'key.bin');
 
 const SGDBClient = new SGDB(privateKey.key);
 var win = nw.Window.get();
@@ -30,7 +30,9 @@ var main = {
   },
   settings: {
     games: {},
-    categories: []
+    categories: [
+      "Default"
+    ]
   },
   intervals: {
     _process: null
@@ -156,6 +158,7 @@ var main = {
     main.settings.categories.push(name);
   },
   changeCategory: function(name, category) {
+    console.log("Changing category for " + name + " to: " + category);
     main.settings.games[name].category = category;
     $('[data-name="' + name + '"]').detach().appendTo('[data-category="' + main.settings.games[name].category + '"]');
   },

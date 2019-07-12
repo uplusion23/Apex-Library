@@ -15,7 +15,7 @@ function getUplayGames() {
             vendor: "uplay",
             remove: false,
             rawtitle: path.basename(psData[0]).replace(/\//g, ""),
-            category: "default"
+            category: "Default"
           }
           main.getCoverArtByName(data.rawtitle, function(coverArt) {
             if (coverArt == undefined) {
