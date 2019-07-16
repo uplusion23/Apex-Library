@@ -262,8 +262,24 @@ html, body {
   transition: var(--transition);
 }
 
+.container > .navigation a::after {
+  display: block;
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  height: 3px;
+  width: 0;
+  content: '';
+  background: #7C7BD9;
+  transition: var(--transition);
+}
+
 .container > .navigation a:first-of-type {
   padding-left: 0;
+}
+
+.container > .navigation a:hover::after,  .container > .navigation a.active::after {
+  width: 100%;
 }
 
 .container > .navigation a:hover, .container > .navigation a.active {
@@ -297,14 +313,13 @@ html, body {
 }
 
 .container > .page .library {
-  display: flex;
+  display: block;
   position: relative;
   width: 100%;
   height: 100%;
-  flex-direction: row;
-  flex-wrap: wrap;
   overflow-x: hidden;
   overflow-y: auto;
+  user-select: none;
 }
 
 .container > .page .settings, .container > .page .about {
@@ -314,10 +329,6 @@ html, body {
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-}
-
-.container > .page .library {
-  user-select: none;
 }
 
 .container > .page .library .category {
@@ -340,16 +351,16 @@ html, body {
   font-weight: 300;
   text-transform: capitalize;
   cursor: pointer;
-  background: #2C3A47;
-  border-radius: 8px;
+  background-image: linear-gradient(90deg, rgba(133,0,254,1) 0%, rgba(48,174,255,1) 100%);
+  border-radius: 2px;
   margin: 0 15px 10px 0;
   padding: 0 15px;
   box-sizing: border-box;
 }
 
 .container > .page .library .category[data-category="favorite"] > h2 {
-  background: #FCD736;
-  color: #212121;
+  background: #2C3A47;
+  color: #FCD736;
 }
 
 .container > .page .library .game-card {
@@ -372,8 +383,8 @@ html, body {
 .container > .page .library .game-card.hidden {
   opacity: 0;
   height: 0;
-  margin: 0;
   pointer-events: none;
+  margin: 0;
 }
 
 .container > .page .library .game-card.favorite {
@@ -589,7 +600,7 @@ html, body {
   padding: 0;
   font-size: 1.1rem;
   font-weight: 500;
-  color: #c33b5e;
+  color: #FF6D5F;
   text-decoration: none;
 }
 
@@ -602,7 +613,7 @@ html, body {
   background-image: linear-gradient(350deg, rgba(114,0,177,0.3) 0%, rgba(0,68,88,0.3) 100%);
   backdrop-filter: blur(20px);
   width: 100%;
-  border-radius: 8px;
+  border-radius: 2px;
   overflow: hidden;
 }
 
@@ -613,7 +624,7 @@ html, body {
   left: 0;
   width: 100%;
   height: 50px;
-  background: #4f2c62;
+  background: #7C7BD9;
   line-height: 50px;
   box-sizing: border-box;
   padding: 0 20px;
@@ -644,10 +655,10 @@ html, body {
   padding: 0 20px;
   height: 35px;
   line-height: 35px;
-  color: #833ab4;
+  color: #7C7BD9;
   box-sizing: border-box;
   cursor: pointer;
-  border: 1px solid #833ab4;
+  border: 1px solid #7C7BD9;
   border-radius: 2px;
   text-decoration: none;
   transition: var(--transition);

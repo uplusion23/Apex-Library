@@ -163,9 +163,9 @@ var main = {
     $('[data-name="' + name + '"]').detach().appendTo('[data-category="' + main.settings.games[name].category + '"]');
   },
   toggleFavorite: function(name) {
-    if (main.settings.games[name].category !== "default") {
-      main.settings.games[name].category = "default";
-      $('[data-name="' + name + '"]').removeClass('favorite').detach().appendTo('[data-category="default"]');;
+    if (main.settings.games[name].category !== "Default") {
+      main.settings.games[name].category = "Default";
+      $('[data-name="' + name + '"]').removeClass('favorite').detach().appendTo('[data-category="Default"]');;
     } else {
       main.settings.games[name].category = "favorite";
       $('[data-name="' + name + '"]').addClass('favorite').detach().appendTo('[data-category="' + main.settings.games[name].category + '"]');
