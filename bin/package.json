@@ -15,8 +15,8 @@
   "chromium-args": "--enable-experimental-web-platform-features",
   "dependencies": {
     "node-cmd": "^3.0.0",
-    "open": "^6.3.0",
-    "steamgriddb": "^1.0.1",
+    "open": "^6.4.0",
+    "steamgriddb": "^1.2.0",
     "xml-js": "^1.6.11"
   }
 }
