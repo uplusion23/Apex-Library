@@ -38,4 +38,4 @@ Download the latest version [here](https://github.com/uplusion23/Apex-Library/re
 ![alt text](https://i.imgur.com/kBlHow1.png "Library Page")
 
 Click to view the video.
-[![Youtube Demo](http://i3.ytimg.com/vi/RYdG7p6Ixy8/maxresdefault.jpg)](https://www.youtube.com/watch?v=RYdG7p6Ixy8)
+[![Youtube Demo](http://i3.ytimg.com/vi/TKp7uqQpeJ0/maxresdefault.jpg)](https://www.youtube.com/watch?v=TKp7uqQpeJ0)
