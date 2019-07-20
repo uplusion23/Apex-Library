@@ -34,7 +34,7 @@ function getBattleNetGames() {
     var battleNetDirectories = main.getDirectories(battleNetGamesDir.toString());
     var battleNetGames = [];
     for (var x = 0; x < battleNetDirectories.length; x++) {
-      if (fs.existsSync(battleNetGamesDir + battleNetDirectories[x] + "\\BlizzardBrowser")) {
+      if (fs.existsSync(battleNetGamesDir + battleNetDirectories[x] + "\\BlizzardBrowser") || fs.existsSync(battleNetGamesDir + battleNetDirectories[x] + "\\_retail_\\BlizzardBrowser")) {
         var gameInfo = {
           name: battleNetDirectories[x].toString(),
           path: battleNetGamesDir + battleNetDirectories[x].toString()
@@ -45,7 +45,7 @@ function getBattleNetGames() {
 
     for (var x = 0; x < battleNetGames.length; x++) {
       var launchCode = "Pro";
-      switch (battleNetGames[x].title) {
+      switch (battleNetGames[x].name) {
         case "Diablo 3":
           launchCode = "D3";
           break;
