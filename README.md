@@ -32,6 +32,15 @@ Categories | `Working`
 ## Download
 Download the latest version [here](https://github.com/uplusion23/Apex-Library/releases)
 
+## Roadmap
+I've decided to make a development roadmap. Not only to let users know what's coming up, but to keep myself on track. Check it out below.
+- Choose Cover Art from a collection of pre-fetched art
+- Drag + Drop sorting
+- (*) Battle.Net / Origin / Steam / UPlay Integration
+- UI Redesign
+- Smooth Games Sorting Animations
+- (*) Theme / Layout Settings
+###### * Not necissarily going to happen.
 
 ## Images
 
