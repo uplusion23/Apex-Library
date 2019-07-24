@@ -1,5 +1,9 @@
+## Update 24 JULY 2019
+Well, good and bad news. I'll start with the good news. GOG.com recently announced their new update for the GOG Galaxy client, version 2.0, which does everything this did, but with a full development and design team backing their client. The bad news? I'm no longer working on this project. I will keep it up on GitHub for other users to see how it was done if needed. 
+- https://twitter.com/GameSpot/status/1154028514208899073
+
 # Apex-Library
-A lightweight, beautiful game library consolidator and launcher built on NodeJS and Node-Webkit. Supports common game libraries and custom games such as DRM Free (*pirated*) games.
+A lightweight, beautiful game library consolidator and launcher built on NodeJS and Node-Webkit. Supports common game libraries and custom games such as DRM Free games.
 
 ### FAQ
 1. **How do I add games that require Steam or UPlay?**
